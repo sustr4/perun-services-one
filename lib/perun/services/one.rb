@@ -1,9 +1,14 @@
-require "perun/services/one/version"
+# Global deps
+require 'thor'
+require 'opennebula'
+require 'json'
+include OpenNebula
 
-module Perun
-  module Services
-    module One
-      # Your code goes here...
-    end
-  end
-end
+# Define modules
+module Perun; end
+module Perun::Services; end
+module Perun::Services::One; end
+
+require "perun/services/one/version"
+require "perun/services/one/master"
+
