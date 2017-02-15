@@ -18,4 +18,4 @@
 
 require 'perun/services/one'
 
-Perun::Slave::One::Master.start(ARGV)
+Perun::Services::One::Master.start(ARGV)
