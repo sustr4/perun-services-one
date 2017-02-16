@@ -16,8 +16,8 @@ class Perun::Services::One::Reality < Perun::Services::One::State
 
     @userPool.each do |user|
       @users << user.name
-
-      # TODO: read banned users
+      @emails << { "name" => user.name, "email" => user['TEMPLATE/EMAIL'] }
+      @banned << user.name if user['TEMPLATE/BANNED'] == "true"
 
       # Group membership
       user.groups.each do | groupid |

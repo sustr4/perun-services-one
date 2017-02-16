@@ -9,9 +9,15 @@ class Perun::Services::One::Master < ::Thor
     target = Perun::Services::One::Target.new(file.read)
     reality = Perun::Services::One::Reality.new()
 
-    puts target.dns
-    puts target.principals
-    puts target.sshKeys
+    usersToAdd = target.users - reality.users
+    usersToRemove = reality.users - target.users
+
+    bansToAdd = target.bans - reality.bans
+    bansToRemove = reality.bans - target.bans
+
+    # TODO Implelement ignored users (method to remove them from all lists?)
+
+    puts usersToRemove
     
 
   end
