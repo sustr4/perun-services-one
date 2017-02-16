@@ -1,20 +1,46 @@
 include OpenNebula
 
 class Perun::Services::One::Reality
+  attr_reader :full
+  attr_reader :users
+  attr_reader :banned
+  attr_reader :groups
+  attr_reader :groupMembers
 
   def initialize()
+    @users = Array.new
+    @groups = Array.new
+    @groupMembers = Array.new
+
     # FIXME: Replace this with config file/option read
     @client = Client.new(nil, ENV["ONE_XMLRPC"])
     @userPool = UserPool.new(@client)
     @userPool.info
-  end 
+    @groupPool = GroupPool.new(@client)
+    @groupPool.info
 
-  def users
-    retval = Array.new
-    @userPool.each do |user|
-      retval << user.name
+    # Fill in a group index for simle lookup by GID
+    @groupIndex = Array.new
+    @groupPool.each do |group|
+      @groupIndex[group['ID'].to_i] = group['NAME']
     end
-    retval
+    
+
+    @userPool.each do |user|
+      @users << user.name
+
+      # TODO: read banned users
+
+      # Group membership
+      user.groups.each do | groupid |
+        @groups << @groupIndex[groupid]
+        @groupMembers << { "name" => user.name, "group" => @groupIndex[groupid] }
+      end
+      @groups = @groups.uniq
+
+    end
+
+    return 0
   end
 
 end
