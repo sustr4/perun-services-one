@@ -12,6 +12,7 @@ module Perun::Services::One; end
 
 require "perun/services/one/version"
 require "perun/services/one/master"
+require "perun/services/one/state"
 require "perun/services/one/target"
 require "perun/services/one/reality"
 

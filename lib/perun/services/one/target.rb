@@ -1,24 +1,10 @@
 require 'pry'
 
-class Perun::Services::One::Target
-  attr_reader :full
-  attr_reader :users
-  attr_reader :banned
-  attr_reader :groups
-  attr_reader :groupMembers
-  attr_reader :dns
-  attr_reader :principals
-  attr_reader :sshKeys
+class Perun::Services::One::Target < Perun::Services::One::State
 
   def initialize( input )
+    super()
     @full = JSON.parse(input)
-    @users = Array.new
-    @banned = Array.new
-    @groups = Array.new
-    @groupMembers = Array.new
-    @dns = Array.new
-    @principals = Array.new
-    @sshKeys = Array.new
 
     @full["users"].each do |user|
       @users << user["login"]
