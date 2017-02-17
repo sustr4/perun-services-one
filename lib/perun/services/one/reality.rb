@@ -1,3 +1,4 @@
+require 'securerandom'
 include OpenNebula
 
 class Perun::Services::One::Reality < Perun::Services::One::State
@@ -52,7 +53,7 @@ class Perun::Services::One::Reality < Perun::Services::One::State
   end
 
   def self.randomPassword
-    [*('a'..'z'),*('0'..'9'),*('A'..'Z')].shuffle[0, 50].join
+    SecureRandom.uuid
   end
 
 end
