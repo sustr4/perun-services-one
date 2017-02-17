@@ -2,6 +2,7 @@
 require 'thor'
 require 'opennebula'
 require 'json'
+require 'logger'
 
 require 'pry'
 

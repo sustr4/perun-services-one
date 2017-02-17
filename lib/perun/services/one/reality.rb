@@ -4,11 +4,10 @@ include OpenNebula
 class Perun::Services::One::Reality < Perun::Services::One::State
   attr_writer :authDriver
 
-  def initialize()
+  def initialize(rpcEndpoint, logger)
     super()
 
-    # FIXME: Replace this with config file/option read
-    @client = Client.new(nil, ENV["ONE_XMLRPC"])
+    @client = Client.new(nil, rpcEndpoint)
     @userPool = UserPool.new(@client)
     @userPool.info
     @groupPool = GroupPool.new(@client)
@@ -44,7 +43,7 @@ class Perun::Services::One::Reality < Perun::Services::One::State
   private
 
   def makeGroupIndex
-    # Fill in a group index for simle lookup by GID
+    # Fill in a group index for simple lookup by GID
     groupIndex = Array.new
     @groupPool.each do |group|
       groupIndex[group['ID'].to_i] = group['NAME']
