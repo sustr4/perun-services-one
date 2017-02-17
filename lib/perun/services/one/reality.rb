@@ -1,6 +1,7 @@
 include OpenNebula
 
 class Perun::Services::One::Reality < Perun::Services::One::State
+  attr_writer :authDriver
 
   def initialize()
     super()
@@ -33,6 +34,12 @@ class Perun::Services::One::Reality < Perun::Services::One::State
     return 0
   end
 
+  def addUser(user)
+    userObj = User.new(User.build_xml,@client)
+    #TODO: catch
+    userObj.allocate(user, self.class.randomPassword, @authDriver)
+  end
+
   private
 
   def makeGroupIndex
@@ -42,6 +49,10 @@ class Perun::Services::One::Reality < Perun::Services::One::State
       groupIndex[group['ID'].to_i] = group['NAME']
     end
     return groupIndex
+  end
+
+  def self.randomPassword
+    [*('a'..'z'),*('0'..'9'),*('A'..'Z')].shuffle[0, 50].join
   end
 
 end

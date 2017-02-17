@@ -12,13 +12,14 @@ class Perun::Services::One::Master < ::Thor
     usersToAdd = target.users - reality.users
     usersToRemove = reality.users - target.users
 
-    bansToAdd = target.bans - reality.bans
-    bansToRemove = reality.bans - target.bans
+    bansToAdd = target.banned - reality.banned
+    bansToRemove = reality.banned - target.banned
 
     # TODO Implelement ignored users (method to remove them from all lists?)
 
-    puts usersToRemove
-    
+    usersToAdd.each do | user |
+      reality.addUser(user)
+    end
 
   end
   default_task :sync
