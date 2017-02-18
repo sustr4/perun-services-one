@@ -2,9 +2,8 @@ require 'securerandom'
 include OpenNebula
 
 class Perun::Services::One::Reality < Perun::Services::One::State
-  attr_writer :authDriver
 
-  def initialize(rpcEndpoint, logger)
+  def initialize(rpcEndpoint, options, logger)
     super()
 
     @client = Client.new(nil, rpcEndpoint)
@@ -27,8 +26,6 @@ class Perun::Services::One::Reality < Perun::Services::One::State
       end
       @groups = @groups.uniq
 
-
-
     end
 
     return 0
@@ -37,7 +34,7 @@ class Perun::Services::One::Reality < Perun::Services::One::State
   def addUser(user)
     userObj = User.new(User.build_xml,@client)
     #TODO: catch
-    userObj.allocate(user, self.class.randomPassword, @authDriver)
+    userObj.allocate(user, self.class.randomPassword, options["authDriver"])
   end
 
   private

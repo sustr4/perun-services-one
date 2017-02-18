@@ -6,12 +6,13 @@ class Perun::Services::One::Master < ::Thor
     # TODO: Move all this into options and conf. file
     file = File.new("/tmp/opennebula.json", "r")
     ignoreUsers = Array.new([ "oneadmin", "serveradmin", "rocci" ])
+    options = { "authDriver" => "x509", "principalTypes" => [ "cert_dns", "principals", "ssh_keys" ] }
 
     logger = Logger.new(STDERR)
     logger.level = Logger::DEBUG
 
-    target = Perun::Services::One::Target.new(file.read)
-    reality = Perun::Services::One::Reality.new(ENV["ONE_XMLRPC"], logger)
+    target = Perun::Services::One::Target.new(file.read, options)
+    reality = Perun::Services::One::Reality.new(ENV["ONE_XMLRPC"], options, logger)
 
     usersToAdd = target.users - reality.users
     usersToRemove = reality.users - target.users

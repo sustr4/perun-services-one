@@ -2,9 +2,10 @@ require 'pry'
 
 class Perun::Services::One::Target < Perun::Services::One::State
 
-  def initialize( input )
+  def initialize( input, options )
     super()
     @full = JSON.parse(input)
+
 
     @full["users"].each do |user|
       @users << user["login"]
@@ -27,14 +28,10 @@ class Perun::Services::One::Target < Perun::Services::One::State
       @groups = @groups.uniq
 
       # Principals
-      user["credentials"]["cert_dns"].each do | dn |
-        @dns << { "name" => user["login"], "dn" => dn }
-      end
-      user["credentials"]["principals"].each do | principal |
-        @principals << { "name" => user["login"], "principal" => principal }
-      end
-      user["credentials"]["ssh_keys"].each do | sshKey |
-        @sshKeys << { "name" => user["login"], "sshKey" => sshKey }
+      options["principalTypes"].each do | type |
+        user["credentials"]["#{type}"].each do | principal |
+          @principals << { "name" => user["login"], "principal" => principal }
+        end
       end
 
     end
