@@ -5,7 +5,6 @@ class Perun::Services::One::State
   attr_reader :groups
   attr_reader :group_members
   attr_reader :privileged_in_groups
-  attr_reader :dns
   attr_reader :principals
   attr_reader :ssh_keys
   attr_reader :emails
@@ -17,7 +16,6 @@ class Perun::Services::One::State
     @groups = []
     @group_members = []
     @privileged_in_groups = []
-    @dns = []
     @principals = []
     @ssh_keys = []
     @emails = []

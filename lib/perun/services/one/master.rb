@@ -4,7 +4,7 @@ class Perun::Services::One::Master < ::Thor
   def sync
     # TODO: Move all this into options and conf. file
     input_file = File.new('/tmp/opennebula.json', 'r')
-    auth_file = File.new(ENV['HOME']+'/.one/one_auth', 'r')
+    auth_file = File.new(ENV['HOME'] + '/.one/one_auth', 'r')
     ignore_users = %w(oneadmin serveradmin rocci)
     options = {
       'auth' => auth_file.read,
@@ -15,7 +15,6 @@ class Perun::Services::One::Master < ::Thor
 
     logger = Logger.new(STDERR)
     logger.level = Logger::DEBUG
-
 
     target = Perun::Services::One::Target.new(input_file.read, options)
     input_file.close

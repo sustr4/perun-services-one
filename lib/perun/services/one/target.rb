@@ -30,6 +30,11 @@ class Perun::Services::One::Target < Perun::Services::One::State
           @principals << { 'name' => user['login'], 'principal' => principal }
         end
       end
+
+      # ssh Keys
+      user['credentials']['ssh_keys'].each do |key|
+        @ssh_keys << { 'name' => user['login'], 'ssh_key' => key }
+      end
     end
   end
 end
