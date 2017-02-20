@@ -1,5 +1,3 @@
-require 'pry'
-
 # Parent for state description classes
 class Perun::Services::One::State
   attr_reader :users
