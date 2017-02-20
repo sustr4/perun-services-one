@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency     "opennebula", ">= 5.2.1", "< 6"
   spec.add_runtime_dependency     "thor", ">= 0.19.4", "< 1"
-  spec.add_runtime_dependency     "json", ">= 2.0.0"
+  spec.add_runtime_dependency     "json", ">= 2.0.0", "< 3"
 
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
