@@ -1,0 +1,13 @@
+Metrics/MethodLength:
+  Max: 50
+Metrics/AbcSize:
+  Max: 50
+Metrics/LineLength:
+  Max: 100
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'lib/perun/services/one/version.rb'
+AllCops:
+  Exclude:
+    - 'perun-services-one.gemspec'

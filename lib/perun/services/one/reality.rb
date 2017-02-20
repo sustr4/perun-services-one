@@ -1,55 +1,51 @@
 require 'securerandom'
 include OpenNebula
 
+# Representation of the current state of user accounts and controlled
+# properties thereof on OpenNebula
 class Perun::Services::One::Reality < Perun::Services::One::State
-
-  def initialize(rpcEndpoint, options, logger)
+  def initialize(options, _logger)
     super()
 
-    @client = Client.new(nil, rpcEndpoint)
-    @userPool = UserPool.new(@client)
-    @userPool.info
-    @groupPool = GroupPool.new(@client)
-    @groupPool.info
+    @options = options
+    @client = Client.new(nil, @options['rpc_endpoint'])
+    @user_pool = UserPool.new(@client)
+    @user_pool.info
+    @group_pool = GroupPool.new(@client)
+    @group_pool.info
 
-    @groupIndex = makeGroupIndex
+    @group_index = make_group_index
 
-    @userPool.each do |user|
+    @user_pool.each do |user|
       @users << user.name
-      @emails << { "name" => user.name, "email" => user['TEMPLATE/EMAIL'] }
-      @banned << user.name if user['TEMPLATE/BANNED'] == "true"
+      @emails << { 'name' => user.name, 'email' => user['TEMPLATE/EMAIL'] }
+      @banned << user.name if user['TEMPLATE/BANNED'] == 'true'
 
       # Group membership
-      user.groups.each do | groupid |
-        @groups << @groupIndex[groupid]
-        @groupMembers << { "name" => user.name, "group" => @groupIndex[groupid] }
+      user.groups.each do |groupid|
+        @groups << @group_index[groupid]
+        @group_members << { 'name' => user.name, 'group' => @group_index[groupid] }
       end
       @groups = @groups.uniq
-
     end
-
-    return 0
   end
 
-  def addUser(user)
-    userObj = User.new(User.build_xml,@client)
-    #TODO: catch
-    userObj.allocate(user, self.class.randomPassword, options["authDriver"])
+  def add_user(user)
+    user_obj = User.new(User.build_xml, @client)
+    # TODO: catch
+    user_obj.allocate(user, random_password, @options['authDriver'])
   end
 
-  private
-
-  def makeGroupIndex
+  private def make_group_index
     # Fill in a group index for simple lookup by GID
-    groupIndex = Array.new
-    @groupPool.each do |group|
-      groupIndex[group['ID'].to_i] = group['NAME']
+    group_index = []
+    @group_pool.each do |group|
+      group_index[group['ID'].to_i] = group['NAME']
     end
-    return groupIndex
+    group_index
   end
 
-  def self.randomPassword
+  private def random_password
     SecureRandom.uuid
   end
-
 end
