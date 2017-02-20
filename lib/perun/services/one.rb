@@ -3,6 +3,7 @@ require 'thor'
 require 'opennebula'
 require 'json'
 require 'logger'
+require 'securerandom'
 
 require 'pry'
 

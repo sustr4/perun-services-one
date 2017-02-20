@@ -1,4 +1,3 @@
-require 'securerandom'
 include OpenNebula
 
 # Representation of the current state of user accounts and controlled
