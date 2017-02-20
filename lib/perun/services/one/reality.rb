@@ -5,7 +5,7 @@ class Perun::Services::One::Reality < Perun::Services::One::State
     super()
 
     @options = options
-    @client = OpenNebula::Client.new(nil, @options['rpc_endpoint'])
+    @client = OpenNebula::Client.new(@options['auth'], @options['rpc_endpoint'])
     user_pool = OpenNebula::UserPool.new(@client)
     user_pool.info
     @group_pool = OpenNebula::GroupPool.new(@client)
@@ -30,7 +30,7 @@ class Perun::Services::One::Reality < Perun::Services::One::State
   def add_user(user)
     user_obj = OpenNebula::User.new(User.build_xml, @client)
     # TODO: catch
-    user_obj.allocate(user, random_password, @options['authDriver'])
+    user_obj.allocate(user, random_password, @options['auth_driver'])
   end
 
   private def make_group_index
