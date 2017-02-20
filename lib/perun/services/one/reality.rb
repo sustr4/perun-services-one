@@ -1,5 +1,3 @@
-include OpenNebula
-
 # Representation of the current state of user accounts and controlled
 # properties thereof on OpenNebula
 class Perun::Services::One::Reality < Perun::Services::One::State
@@ -7,10 +5,10 @@ class Perun::Services::One::Reality < Perun::Services::One::State
     super()
 
     @options = options
-    @client = Client.new(nil, @options['rpc_endpoint'])
-    @user_pool = UserPool.new(@client)
+    @client = OpenNebula::Client.new(nil, @options['rpc_endpoint'])
+    @user_pool = OpenNebula::UserPool.new(@client)
     @user_pool.info
-    @group_pool = GroupPool.new(@client)
+    @group_pool = OpenNebula::GroupPool.new(@client)
     @group_pool.info
 
     @group_index = make_group_index
@@ -30,7 +28,7 @@ class Perun::Services::One::Reality < Perun::Services::One::State
   end
 
   def add_user(user)
-    user_obj = User.new(User.build_xml, @client)
+    user_obj = OpenNebula::User.new(User.build_xml, @client)
     # TODO: catch
     user_obj.allocate(user, random_password, @options['authDriver'])
   end
