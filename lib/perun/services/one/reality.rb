@@ -6,14 +6,14 @@ class Perun::Services::One::Reality < Perun::Services::One::State
 
     @options = options
     @client = OpenNebula::Client.new(nil, @options['rpc_endpoint'])
-    @user_pool = OpenNebula::UserPool.new(@client)
-    @user_pool.info
+    user_pool = OpenNebula::UserPool.new(@client)
+    user_pool.info
     @group_pool = OpenNebula::GroupPool.new(@client)
     @group_pool.info
 
     @group_index = make_group_index
 
-    @user_pool.each do |user|
+    user_pool.each do |user|
       @users << user.name
       @emails << { 'name' => user.name, 'email' => user['TEMPLATE/EMAIL'] }
       @banned << user.name if user['TEMPLATE/BANNED'] == 'true'
